@@ -9,3 +9,5 @@ VUE For Show Pneumonia Data
 
 
 ![效果图](./imgs/img.png)
+
+[React版本](https://github.com/lj7788/pneumonia)
