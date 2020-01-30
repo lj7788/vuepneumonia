@@ -6,7 +6,7 @@
         style="width:calc(100% - 305px);height:300px;float:left"
       ></div>
       <div style="float:left;width:300px">
-        <table className="mydata" width="300px" style="margin-top:12px;">
+        <table class="mydata" width="300px" style="margin-top:12px;">
           <thead>
             <tr>
               <th>时间</th>
