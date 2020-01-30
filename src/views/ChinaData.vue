@@ -17,8 +17,8 @@
             <i class="el-icon-arrow-right" v-show="!it.showChild"></i>
           </td>
           <td :style="'color:' + text(it.confirm)">{{ it.confirm }}</td>
-          <td :style="'color:' + text(it.confirm)">{{ it.dead }}</td>
-          <td :style="'color:' + text(it.confirm)">{{ it.heal }}</td>
+          <td :style="'color:' + text(it.dead)">{{ it.dead }}</td>
+          <td :style="'color:' + text(it.heal)">{{ it.heal }}</td>
         </tr>
         <template v-if="it.showChild">
           <tr

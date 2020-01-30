@@ -1,6 +1,32 @@
 <template>
   <div>
-    <div id="main" style="width:100%;height:300px"></div>
+    <div class="top" style="height:300px;">
+      <div
+        id="main"
+        style="width:calc(100% - 305px);height:300px;float:left"
+      ></div>
+      <div style="float:left;width:300px">
+        <table className="mydata" width="300px" style="margin-top:12px;">
+          <thead>
+            <tr>
+              <th>时间</th>
+              <th>确诊<span class="red">(增加)</span></th>
+              <th>死亡<span class="red">(增加)</span></th>
+              <th>治愈<span class="red">(增加)</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(it,idx) in lineData" :key="idx">
+              <td>{{it.date}}</td>
+              <td>{{it.confirm}}<span class="red">({{it.sumConfirm}})</span></td>
+              <td>{{it.dead}}<span class="red">({{it.sumDead}})</span></td>
+              <td>{{it.heal}}<span class="red">({{it.sumHeal}})</span></td>              
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="clear"></div>
+    </div>
     <div id="mainMap" style="width:100%;height:600px"></div>
   </div>
 </template>
@@ -20,6 +46,7 @@ import "echarts/map/js/china.js";
 export default {
   data() {
     return {
+      lineData: [],
       myChart: null,
       myMap: null
     };
@@ -67,6 +94,7 @@ export default {
     },
     updateChinaData(data) {
       let mapChart = this.myMap;
+
       if (mapChart) {
         mapChart.setOption({
           tooltip: {
@@ -105,13 +133,25 @@ export default {
     },
     updateLineData(data) {
       let myChart = this.myChart;
+      for (let i = 0; i < data.length; i++) {
+        let it = data[i];
+        it.sumConfirm = i === 0 ? 0 : +data[i].confirm - data[i - 1].confirm;
+        it.sumDead = i === 0 ? 0 : +data[i].dead - data[i - 1].dead;
+        it.sumHeal = i === 0 ? 0 : +data[i].heal - data[i - 1].heal;
+        it.sumSuspect = i === 0 ? 0 : +data[i].suspect - data[i - 1].suspect;
+      }
+      this.lineData = data;
       if (myChart) {
         myChart.setOption({
+          tooltip: {
+            trigger: "item",
+            formatter: "{b}<br/>{c}"
+          },
           yAxis: {
             type: "value"
           },
           legend: {
-            data: ["疑似", "确诊", "死亡", "治愈"]
+            data: ["疑似", "确诊", "死亡", "治愈", "累加确诊"]
           },
           xAxis: {
             data: data.map(it => it.date)
@@ -136,6 +176,11 @@ export default {
               name: "疑似",
               type: "line",
               data: data.map(it => it.suspect)
+            },
+            {
+              name: "累加确诊",
+              type: "line",
+              data: data.map(it => it.sumConfirm)
             }
           ]
         });
@@ -149,4 +194,12 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.red{
+  color:red;
+}
+.mydata{
+  position: relative;
+  z-index: 999999;
+}
+</style>

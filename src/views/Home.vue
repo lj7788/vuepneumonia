@@ -31,7 +31,8 @@ export default {
       title: "",
       mainData: [],
       countryData: [],
-      chindData: []
+      chindData: [],
+      lineData:[],
     };
   },
   methods: {
@@ -123,6 +124,7 @@ export default {
     },
     setLineData(data) {
       let tmps = JSON.parse(data.data);
+      this.lineData=tmps
       tmps = tmps.sort((a, b) => a.date.localeCompare(b.date));
       this.$refs.myChart.updateLineData(tmps);
     },
@@ -132,6 +134,7 @@ export default {
     }
   },
   created() {
+    window.myApp=this
     setInterval(() => {
       this.updateData();
     }, 1000 * 60);
