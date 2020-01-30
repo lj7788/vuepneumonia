@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class="top" style="height:300px;">
+    <div class="top" >
       <div
+        class="map-top-left" style="height:300px;"
         id="main"
-        style="width:calc(100% - 305px);height:300px;float:left"
       ></div>
-      <div style="float:left;width:300px">
-        <table class="mydata" width="300px" style="margin-top:12px;">
+      <div  class="map-top-right" style="">
+        <table class="mydata" width="100%" style="margin-top:12px;">
           <thead>
             <tr>
               <th>时间</th>
@@ -272,5 +272,30 @@ export default {
   cursor: pointer;
   position: relative;
   z-index: 8888;
+}
+@media (min-width: 720px){
+  .map-top-left{
+    width: 100%;
+  }
+  .map-top-right{
+    width: 100%;
+  }
+  .back{
+    margin-top: 0px;
+  }
+}
+@media screen and (min-width:1440px){ 
+  .top{
+    height:300px;
+  }
+  .map-top-left{
+    float:left;
+    width:calc(100% - 305px);
+    height:300px;
+  }
+  .map-top-right{
+    float:left;
+    width:300px;
+  }
 }
 </style>

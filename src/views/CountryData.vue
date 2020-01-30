@@ -1,5 +1,5 @@
 <template>
-  <table class="mydata" width="400px">
+  <table class="mydata" width="100%">
     <thead>
       <tr>
         <th>国家</th>

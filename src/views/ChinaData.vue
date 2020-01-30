@@ -1,5 +1,5 @@
 <template>
-  <table class="mydata" width="400px" style="margin-top:12px;">
+  <table class="mydata" width="100%" style="margin-top:12px;">
     <thead>
       <tr>
         <th>地区</th>

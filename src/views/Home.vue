@@ -153,13 +153,24 @@ export default {
 };
 </script>
 <style scoped>
-.main-left {
-  float: left;
-  width: 400px;
+@media (min-width: 720px){
+  .main-left {
+    width: 100%;
+  }
+  .main-right {
+    width: 100%;
+  }
 }
-.main-right {
-  float: left;
-  width: calc(100% - 405px);
+
+@media screen and (min-width:1440px){ 
+  .main-left {
+    float: left;
+    width: 400px;
+  }
+  .main-right {
+    float: left;
+    width: calc(100% - 405px);
+  }
 }
 .clear {
   clear: both;
