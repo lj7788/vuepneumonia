@@ -27,7 +27,8 @@
       </div>
       <div class="clear"></div>
     </div>
-    <div id="mainMap" style="width:100%;height:600px"></div>
+    <i v-if="showSub" @click="doGoBack" class="el-icon-back back" style="cursor:point"></i>
+    <div id="mainMap" style="width:100%;height:600px;margin-top:-30px"></div>
   </div>
 </template>
 
@@ -43,12 +44,17 @@ import "echarts/lib/component/title";
 import "echarts/lib/component/legend";
 import "echarts/lib/component/geo";
 import "echarts/map/js/china.js";
+//import "echarts/map/js/province/shanxi1.js";
+import echartData from './mapData'
 export default {
   data() {
     return {
       lineData: [],
+      mapData:[],
       myChart: null,
-      myMap: null
+      myMap: null,
+      subData:[],
+      showSub:false,
     };
   },
   methods: {
@@ -90,18 +96,74 @@ export default {
           }
         ]
       });
+      myChart2.on('click',this.mapDbclick)
       this.myMap = myChart2;
+    },
+    mapDbclick(a,b,c){
+      if(this.showSub){
+        return
+      }
+      let data=a.data.data.child
+      this.subData=data
+      let mapChart = this.myMap;     
+      if (mapChart) {
+        let max= data.sort((a,b)=>b.confirm-a.confirm)[0].confirm
+        max=max>200?200:max
+        this.showSub=true
+        let cdata=echartData.filter(d=>d.name===a.data.name)[0]
+        let tmps=cdata.city.map(it=>{
+          let temps=data.filter(d=>it.name.indexOf(d.city)>=0)          
+          return {
+            name:it.name,
+            value:temps.length>0?temps[0].confirm:0
+          }
+        })        
+        require("echarts/map/js/province/"+cdata.map+".js")
+         mapChart.setOption({
+          dataRange: {
+            max:max,
+            x: "left",
+            y: "middle",
+            text: ["高", "低"],
+            calculable: true
+          },
+            series: [
+            {
+              name: "confirm",
+              type: "map",
+              mapType: a.data.name,
+              roam: false,
+              label: {
+                show: true
+              },
+              itemStyle: {
+                normal: { label: { show: true, formatter: "{b}\n{c}" } },
+                emphasis: { label: { show: true, formatter: "{b}\n{c}" } }
+              },
+              data: tmps
+            }
+          ]
+         })
+      }
+    },
+    doGoBack(){
+      this.showSub=false
+      this.updateChinaData(this.mapData);
     },
     updateChinaData(data) {
       let mapChart = this.myMap;
-
+      this.mapData=data
+      let max= data.sort((a,b)=>b.confirm-a.confirm)[0].confirm
+      max=max>200?200:max
       if (mapChart) {
+         this.showSub=false
         mapChart.setOption({
           tooltip: {
             trigger: "item",
             formatter: "{b}<br/>{c}"
           },
           dataRange: {
+            max:max,
             x: "left",
             y: "middle",
             text: ["高", "低"],
@@ -123,7 +185,8 @@ export default {
               data: data.map(it => {
                 return {
                   name: it.area,
-                  value: it.confirm
+                  value: it.confirm,
+                  data:it
                 };
               })
             }
@@ -201,5 +264,13 @@ export default {
 .mydata{
   position: relative;
   z-index: 999999;
+}
+.back{
+  font-size: 20px;
+  margin-top: -30px;
+  margin-left:30px;
+  cursor: pointer;
+  position: relative;
+  z-index: 8888;
 }
 </style>

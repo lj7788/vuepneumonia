@@ -27,8 +27,8 @@
           >
             <td align="right">{{ itt.city }}</td>
             <td :style="'color:' + text(itt.confirm)">{{ itt.confirm }}</td>
-            <td :style="'color:' + text(itt.confirm)">{{ itt.dead }}</td>
-            <td :style="'color:' + text(itt.confirm)">{{ itt.heal }}</td>
+            <td :style="'color:' + text(itt.dead)">{{ itt.dead }}</td>
+            <td :style="'color:' + text(itt.heal)">{{ itt.heal }}</td>
           </tr>
         </template>
       </template>
