@@ -12,8 +12,8 @@
       <tr v-for="(it, idx) in countryDatas" :key="idx">
         <td>{{it.name}}</td>
         <td :style="'color:'+text(it.confirm)">{{it.confirm}}</td>
-       <td :style="'color:'+text(it.confirm)">{{it.dead}}</td>
-        <td :style="'color:'+text(it.confirm)">{{it.heal}}</td>
+       <td :style="'color:'+text(it.dead)">{{it.dead}}</td>
+        <td :style="'color:'+text(it.heal)">{{it.heal}}</td>
       </tr>
     </tbody>
   </table>
@@ -25,7 +25,7 @@ export default {
   props: ["countryDatas"],
   methods:{
       text(d){
-         return showText(d)
+         return showText(d?d:0)
       }
   }
 };
